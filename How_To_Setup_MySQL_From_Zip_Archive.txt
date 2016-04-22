@@ -1,0 +1,42 @@
+In Order to setup MySQL from a downloaded zip. Following things needs to be done.
+
+Extract contents of the zip to a location.
+e.g.
+Extracted in > E:\database\MySQL
+such that, bin folder is at> E:\database\MySQL\bin
+Create an empty dir (for data) > E:\database\data
+
+Create a basic options file to setup mysql  (contents below):
+
+--START
+
+[mysqld]
+# set basedir to your installation path
+basedir=E:/database/MySQL
+# set datadir to the location of your data directory
+datadir=E:/database/data
+
+--END
+Name this file as my.cnf and copy it in MySQL extracted location. E:\database\MySQL
+
+When all this done, configuration wise we are done.
+
+Now next steps:
+1. Open command prompt with Admin privileges (as admin)
+2. Goto bin dir (E:\database\MySQL\bin), and type -> mysqld.exe --initialize
+This step will create tonnes of files in data directory (that we ourselves created in the starting and mentioned in my.cnf file.)
+3. When step-2 is complete. In the data dir you will see a file name, <machine-name>.err , you will  see a message like.
+2016-04-22T16:09:31.564944Z 1 [Note] A temporary password is generated for root@localhost: b4Zm1EQZE+!>
+So this means mysql setup is done, and an account with username as 'root' and password as 'b4Zm1EQZE+!>' has been created and can be used to login from localhost.
+4. Now in the same console, from bin dir run command. mysqld.exe --console, ideally the server should start.
+5. Open another command prompt normal one this time. goto bin dir of mysql and run command.
+mysql.exe -u root -p
+This will prompt for a password, enter the password that mysql generated in step-3.
+6. mysql prompt will open, execute command...  use mysql;  
+This will fail with the following message. "ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement."
+To reset password run the following command.
+mysql> ALTER USER 'root'@'localhost' IDENTIFIED BY '<my_new_pass>';
+Query OK, 0 rows affected (0.00 sec)
+This will set the new password for the root user.
+
+Now we are all ready to use mysql.
